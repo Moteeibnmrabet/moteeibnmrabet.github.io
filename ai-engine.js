@@ -546,9 +546,12 @@ Required: Python, OCR / Tesseract, FastAPI, PostgreSQL, Docker, Document Process
   const configuredApiBase = typeof window.MIM_API_BASE_URL === 'string'
     ? window.MIM_API_BASE_URL.trim().replace(/\/+$/, '')
     : '';
-  const API_BASE = configuredApiBase || ((window.location.protocol === 'http:' && window.location.port === '8000')
-    ? window.location.origin
-    : 'http://localhost:8000');
+  const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+  const API_BASE = configuredApiBase || (
+    (window.location.protocol === 'http:' && window.location.port === '8000')
+      ? window.location.origin
+      : (isLocalHost ? 'http://localhost:8000' : '')
+  );
 
   let conversationHistory = [];
 
